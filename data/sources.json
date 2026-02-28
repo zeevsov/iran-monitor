@@ -13,7 +13,7 @@
   },
   "Reuters": {
     "score": 62,
-    "mentions": 3
+    "mentions": 4
   },
   "AP": {
     "score": 67,
@@ -40,8 +40,8 @@
     "mentions": 0
   },
   "CNN": {
-    "score": 47,
-    "mentions": 7
+    "score": 46,
+    "mentions": 8
   },
   "Al Jazeera": {
     "score": 29,
@@ -69,6 +69,10 @@
   },
   "Walla": {
     "score": 50,
+    "mentions": 1
+  },
+  "i24news": {
+    "score": 49,
     "mentions": 1
   }
 }
