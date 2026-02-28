@@ -12,8 +12,8 @@
     "mentions": 0
   },
   "Reuters": {
-    "score": 65,
-    "mentions": 1
+    "score": 62,
+    "mentions": 2
   },
   "AP": {
     "score": 67,
@@ -21,11 +21,11 @@
   },
   "Times of Israel": {
     "score": 76,
-    "mentions": 4
+    "mentions": 5
   },
   "Jerusalem Post": {
     "score": 68,
-    "mentions": 0
+    "mentions": 1
   },
   "Al Arabiya": {
     "score": 63,
@@ -41,7 +41,7 @@
   },
   "CNN": {
     "score": 50,
-    "mentions": 5
+    "mentions": 6
   },
   "Al Jazeera": {
     "score": 29,
@@ -57,7 +57,7 @@
   },
   "Ynet": {
     "score": 52,
-    "mentions": 3
+    "mentions": 4
   },
   "Kan News": {
     "score": 49,
@@ -66,5 +66,9 @@
   "Tasnim": {
     "score": 48,
     "mentions": 2
+  },
+  "Walla": {
+    "score": 50,
+    "mentions": 1
   }
 }
