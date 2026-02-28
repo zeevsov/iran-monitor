@@ -324,7 +324,8 @@ def run_scan(extra_intel=None):
     save_json("sources.json", sources)
 
     print(f"Scan complete at {now.strftime('%H:%M:%S')}")
-    print(f"Summary: {scan['summary'][:80]}...")
+    safe_summary = scan['summary'][:80].encode('ascii', 'replace').decode('ascii')
+    print(f"Summary: {safe_summary}...")
     return scan
 
 # ============================================
