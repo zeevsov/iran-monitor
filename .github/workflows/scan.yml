@@ -3,7 +3,7 @@ name: Iran Monitor - Hourly Scan
 on:
   # Automatic: every hour
   schedule:
-    - cron: '0 * * * *'
+    - cron: '5 * * * *'
 
   # Manual trigger with optional intel input
   workflow_dispatch:

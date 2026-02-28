@@ -19,8 +19,8 @@ import anthropic
 # CONFIG
 # ============================================
 DATA_DIR = Path(__file__).parent.parent / "data"
-MODEL = "claude-sonnet-4-5-20250929"
-MAX_TOKENS = 4096
+MODEL = "claude-opus-4-0-20250514"
+MAX_TOKENS = 8192
 ISRAEL_TZ = timezone(timedelta(hours=3))  # Israel Standard Time (approx)
 
 # ============================================
@@ -76,27 +76,68 @@ def build_system_prompt(history, sources, user_intel, feedback):
         for name, data in sorted(sources.items(), key=lambda x: x[1].get("score", 50), reverse=True):
             src_block += f"- {name}: ציון {data.get('score', 50)}/100 (אזכורים: {data.get('mentions', 0)})\n"
 
-    system_prompt = f"""אתה אנליסט מודיעין צבאי-אסטרטגי ישראלי ברמה הגבוהה ביותר.
+    system_prompt = f"""אתה אנליסט מודיעין צבאי-אסטרטגי ישראלי ברמה הגבוהה ביותר. רקע של שנים בקהילת המודיעין.
 הזמן הנוכחי: {time_str} (שעון ישראל)
 
 ## המשימה:
-סקירה מבצעית קצרה ומדויקת של המצב באיראן. חפש חדשות עדכניות ובצע ניתוח.
+סקירה מבצעית מקיפה ומדויקת של הסיטואציה הביטחונית סביב איראן והמזרח התיכון. חפש חדשות עדכניות ביותר ובצע ניתוח מעמיק.
 
 ## מבנה הסקירה (חובה לכתוב בדיוק בפורמט הזה):
 
-### מצב נוכחי
-- מה הותקף, איפה, על ידי מי, באיזה אמצעים
-- נזקים מאומתים vs. נטענים
-- תגובת איראן (רשמית + לא רשמית)
-- תגובות בינלאומיות חשובות
+### 🔴 מצב מבצעי נוכחי
+**התקפות על איראן:**
+- מה הותקף (מתקנים, בסיסים, תשתיות - פרט שמות ומיקומים)
+- על ידי מי (ישראל/ארה"ב/קואליציה - פרט)
+- באיזה אמצעי לחימה (טילים, מטוסים, סוג תחמושת, מספר גלים)
+- סדר גודל הכוחות: כמה מטוסים, כמה טילים, כמה גלים, משך המבצע
+- נזקים מאומתים vs. נטענים (הפרד בבירור!)
 
-### תרחישים - שעה קרובה
-- מה הכי סביר שיקרה עכשיו
-- סיכויים לכל תרחיש (אחוזים)
+**תגובת איראן:**
+- תגובה רשמית (הצהרות מנהיגים, משמרות המהפכה)
+- תגובה צבאית (שיגורים, הפעלת שלוחים, הכנות)
+- מצב ההגנה האווירית האיראנית
 
-### תרחישים - 24-72 שעות
-- לאן זה מתפתח
-- מה המשמעות האסטרטגית
+**התקפות איראניות בעולם:**
+- שיגורים לכיוון ישראל (טילים, מל"טים, שיוט - מספרים וסוגים)
+- הפעלת חיזבאללה / חות'ים / מיליציות בעיראק ובסוריה
+- פעולות טרור או סייבר שמיוחסות לאיראן
+- תקיפות נגד בסיסים אמריקאים באזור
+
+### 🇮🇱 המצב בישראל
+- מצב הכוננות והעורף (אזעקות, יירוטים, נפגעים)
+- פעילות צה"ל (הצהרות דובר, תמרונים, גיוס מילואים)
+- הצהרות מדיניות (ראש ממשלה, שר ביטחון)
+- מצב הגבולות (צפון/דרום/מזרח)
+- השפעה על החיים האזרחיים
+
+### 🌍 זירה בינלאומית
+- עמדת ארה"ב (הצהרות, פריסת כוחות, מעורבות)
+- עמדות מעצמות (רוסיה, סין, אירופה)
+- האו"ם ומוסדות בינלאומיים
+- תנועות צבאיות באזור (נושאות מטוסים, בסיסים)
+
+### 📊 תרחישים - שעה קרובה
+הצג 3 תרחישים מדורגים:
+**תרחיש א' (X% הסתברות): [שם התרחיש]**
+- מה צפוי לקרות
+- סימנים שמחזקים תרחיש זה
+- מה זה אומר עבורנו
+
+**תרחיש ב' (Y% הסתברות): [שם התרחיש]**
+- ...
+
+**תרחיש ג' (Z% הסתברות): [שם התרחיש]**
+- ...
+
+### 📈 תרחישי המשך - 24-72 שעות
+הצג 2-3 תרחישי המשך:
+**תרחיש המשך 1 (X%): [שם]**
+- התפתחות צפויה
+- נקודות מפנה אפשריות
+- משמעות אסטרטגית לישראל
+
+**תרחיש המשך 2 (Y%): [שם]**
+- ...
 
 ### הערכת מקורות
 ליד כל מידע סמן:
@@ -111,14 +152,15 @@ def build_system_prompt(history, sources, user_intel, feedback):
 4. מקורות להיזהר מהם: BBC (נטייה אנטי-ישראלית), Al Jazeera (מוטה), CNN (שטחי) - אם משתמש בהם, ציין את ההטיה
 5. עדיף "לא ידוע עדיין" מאשר ניחוש
 6. אם בסקירות קודמות מישהו טעה - ציין זאת
-7. כתוב בעברית, קצר, בנקודות
-8. בסוף: "מקורות עיקריים" - רשימת המקורות ששימשו עם דירוג אמינות
+7. כתוב בעברית, קצר אבל מקיף, בנקודות
+8. מספרים! תמיד תן מספרים - כמה טילים, כמה מטוסים, כמה נפגעים, כמה יירוטים
+9. בסוף: "מקורות עיקריים" - רשימת המקורות ששימשו עם דירוג אמינות
 
 ## שפות חיפוש:
-- אנגלית: Iran attack, Iran strike, Iran military, Iran war
-- ערבית: ايران هجوم, ايران حرب, ايران ضربة
-- פרסית: ایران حمله, ایران جنگ
-- עברית: איראן תקיפה, איראן מלחמה, איראן מתקפה
+- אנגלית: Iran attack, Iran strike, Iran military, Iran war, Israel Iran, Iran retaliation, Houthi attack, Hezbollah
+- ערבית: ايران هجوم, ايران حرب, ايران ضربة, حزب الله, الحوثي
+- פרסית: ایران حمله, ایران جنگ, سپاه پاسداران
+- עברית: איראן תקיפה, איראן מלחמה, צה"ל איראן, כיפת ברזל, חיזבאללה, חות'ים
 {intel_block}
 {fb_block}
 {src_block}
@@ -212,16 +254,19 @@ def run_scan(extra_intel=None):
     print("Building prompt...")
     system_prompt = build_system_prompt(history, sources, user_intel, feedback)
 
-    user_message = """בצע סקירה מבצעית עדכנית. מה קורה באיראן עכשיו?
+    user_message = """בצע סקירה מבצעית מקיפה. מה המצב הביטחוני עכשיו?
 
 חפש מידע עדכני ביותר על:
-1. התקפות על איראן - מה הותקף, על ידי מי, באיזה נשק
-2. תגובת איראן - רשמית ולא רשמית
-3. תגובות בינלאומיות
-4. מה צפוי לקרות בשעה הקרובה ובימים הקרובים
+1. התקפות על איראן - מה הותקף, על ידי מי, באיזה נשק, סדר גודל כוחות (מספר מטוסים, טילים, גלים)
+2. התקפות של איראן בעולם - שיגורים לישראל, הפעלת חיזבאללה/חות'ים/מיליציות, תקיפות בסיסים אמריקאים
+3. המצב בישראל - אזעקות, יירוטים, נפגעים, מצב העורף, הצהרות צה"ל ומדיניות
+4. תגובת איראן - רשמית ולא רשמית, מצב ההגנה האווירית
+5. הזירה הבינלאומית - ארה"ב, רוסיה, סין, תנועות צבאיות באזור
+6. תרחישים - 3 תרחישים מדורגים לשעה קרובה עם אחוזי הסתברות, ו-2-3 תרחישי המשך ל-24-72 שעות
 
-חפש בשפות: אנגלית, ערבית, פרסית, עברית.
-תן לי סקירה קצרה, חדה, עם מקורות ורמת אמינות."""
+חפש בכל השפות: אנגלית, ערבית, פרסית, עברית.
+תן מספרים! כמה טילים, כמה מטוסים, כמה נפגעים.
+סקירה מקיפה עם מקורות ורמת אמינות ליד כל פריט מידע."""
 
     print("Calling Claude API with web search...")
     client = anthropic.Anthropic(api_key=api_key)
@@ -234,7 +279,7 @@ def run_scan(extra_intel=None):
         tools=[{
             "type": "web_search_20250305",
             "name": "web_search",
-            "max_uses": 10
+            "max_uses": 20
         }],
         messages=[{"role": "user", "content": user_message}]
     )
