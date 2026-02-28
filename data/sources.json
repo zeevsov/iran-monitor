@@ -48,8 +48,8 @@
     "mentions": 1
   },
   "IRNA": {
-    "score": 26,
-    "mentions": 2
+    "score": 28,
+    "mentions": 3
   },
   "Fars News": {
     "score": 25,
@@ -64,7 +64,7 @@
     "mentions": 1
   },
   "Tasnim": {
-    "score": 49,
-    "mentions": 1
+    "score": 48,
+    "mentions": 2
   }
 }
