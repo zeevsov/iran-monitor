@@ -12,8 +12,8 @@
     "mentions": 0
   },
   "Reuters": {
-    "score": 70,
-    "mentions": 7
+    "score": 72,
+    "mentions": 8
   },
   "AP": {
     "score": 67,
@@ -21,7 +21,7 @@
   },
   "Times of Israel": {
     "score": 79,
-    "mentions": 8
+    "mentions": 9
   },
   "Jerusalem Post": {
     "score": 68,
@@ -29,7 +29,7 @@
   },
   "Al Arabiya": {
     "score": 63,
-    "mentions": 2
+    "mentions": 3
   },
   "OSINT Analysts": {
     "score": 69,
@@ -41,7 +41,7 @@
   },
   "CNN": {
     "score": 49,
-    "mentions": 10
+    "mentions": 11
   },
   "Al Jazeera": {
     "score": 29,
