@@ -13,7 +13,7 @@
   },
   "Reuters": {
     "score": 72,
-    "mentions": 9
+    "mentions": 10
   },
   "AP": {
     "score": 67,
@@ -41,11 +41,11 @@
   },
   "CNN": {
     "score": 49,
-    "mentions": 12
+    "mentions": 13
   },
   "Al Jazeera": {
     "score": 29,
-    "mentions": 2
+    "mentions": 3
   },
   "IRNA": {
     "score": 28,
