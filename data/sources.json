@@ -4,8 +4,8 @@
     "mentions": 0
   },
   "ISW": {
-    "score": 80,
-    "mentions": 0
+    "score": 83,
+    "mentions": 1
   },
   "Jane's": {
     "score": 85,
@@ -32,16 +32,16 @@
     "mentions": 0
   },
   "OSINT Analysts": {
-    "score": 70,
-    "mentions": 0
+    "score": 69,
+    "mentions": 1
   },
   "BBC": {
     "score": 35,
     "mentions": 0
   },
   "CNN": {
-    "score": 40,
-    "mentions": 0
+    "score": 43,
+    "mentions": 1
   },
   "Al Jazeera": {
     "score": 30,
@@ -54,5 +54,9 @@
   "Fars News": {
     "score": 25,
     "mentions": 0
+  },
+  "Ynet": {
+    "score": 49,
+    "mentions": 1
   }
 }

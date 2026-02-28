@@ -19,7 +19,7 @@ import anthropic
 # CONFIG
 # ============================================
 DATA_DIR = Path(__file__).parent.parent / "data"
-MODEL = "claude-opus-4-0-20250514"
+MODEL = "claude-opus-4-6"
 MAX_TOKENS = 8192
 ISRAEL_TZ = timezone(timedelta(hours=3))  # Israel Standard Time (approx)
 
