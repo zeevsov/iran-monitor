@@ -185,7 +185,7 @@ def update_sources(content, sources):
 # MAIN SCAN
 # ============================================
 def run_scan(extra_intel=None):
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
     if not api_key:
         print("ERROR: ANTHROPIC_API_KEY not set", file=sys.stderr)
         sys.exit(1)
