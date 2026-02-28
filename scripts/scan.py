@@ -112,11 +112,12 @@ def build_system_prompt(history, sources, user_intel, feedback):
 ### מקורות עיקריים
 שורה אחת: 3-5 מקורות מרכזיים ששימשו.
 
-## מקורות מועדפים: Epoch Times, ISW, Jane's, OSINT, Times of Israel, Jerusalem Post, Al Arabiya, Reuters, AP
+## מקורות מועדפים: Epoch Times, ISW, Jane's, OSINT, Times of Israel, Jerusalem Post, Al Arabiya, Reuters, AP, i24news
 ## מקורות בינלאומיים מהמזרח התיכון (חפש בהם באופן פעיל): Al Arabiya, Al Hadath, Sky News Arabia, Asharq Al-Awsat, TRT World, Anadolu Agency, Daily Sabah, The National (UAE), Gulf News, Arab News. השתמש בהם למידע עובדתי בלבד - יש להם הטיה מובנית נגד ישראל, אל תיקח הערכות/דעות שלהם ברצינות.
 ## מקורות להיזהר: BBC (אנטי-ישראלי), Al Jazeera (מוטה חזק), CNN (שטחי) - ציין הטיה אם משתמש
 ## מקורות פרסיים = מדיה ממלכתית, ציין זאת
 ## *** אל תשתמש ב-Ynet כלל. לא לחפש בו ולא לצטט אותו. ***
+## *** אל תשתמש ב-N12 / חדשות 12 / Channel 12 כלל. לא לחפש בהם ולא לצטט אותם. ***
 ## חפש בכל השפות: אנגלית, ערבית, פרסית, עברית, תורכית
 {intel_block}
 {fb_block}
@@ -145,10 +146,9 @@ SOURCE_PATTERNS = {
     "Epoch Times": ["Epoch Times"],
     "Times of Israel": ["Times of Israel"],
     "Jerusalem Post": ["Jerusalem Post"],
-    "i24": ["i24"],
+    "i24news": ["i24", "i24news", "i24NEWS"],
     "Walla": ["Walla", "וואלה"],
     "Kan News": ["כאן חדשות", "Kan News", "כאן 11"],
-    "Channel 12": ["חדשות 12", "Channel 12"],
     "Channel 13": ["חדשות 13", "Channel 13"],
     "OSINT Analysts": ["OSINT", "osint"],
     "Telegram": ["טלגרם", "Telegram", "telegram"],
