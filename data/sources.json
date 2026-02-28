@@ -21,7 +21,7 @@
   },
   "Times of Israel": {
     "score": 73,
-    "mentions": 1
+    "mentions": 2
   },
   "Jerusalem Post": {
     "score": 68,
@@ -40,16 +40,16 @@
     "mentions": 0
   },
   "CNN": {
-    "score": 46,
-    "mentions": 2
+    "score": 45,
+    "mentions": 3
   },
   "Al Jazeera": {
-    "score": 30,
-    "mentions": 0
+    "score": 29,
+    "mentions": 1
   },
   "IRNA": {
-    "score": 27,
-    "mentions": 1
+    "score": 26,
+    "mentions": 2
   },
   "Fars News": {
     "score": 25,
@@ -60,6 +60,10 @@
     "mentions": 2
   },
   "Kan News": {
+    "score": 49,
+    "mentions": 1
+  },
+  "Tasnim": {
     "score": 49,
     "mentions": 1
   }

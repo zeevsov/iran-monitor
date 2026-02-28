@@ -502,6 +502,16 @@
         </div>
     </div>
 
+    <!-- === SECTION: Hot Events === -->
+    <div class="section" id="hotSectionWrap" style="display:none">
+        <div class="section-header">
+            <span class="section-icon">&#x1F525;</span>
+            <h2>אירועים חמים</h2>
+        </div>
+        <div class="section-body" id="hotSection">
+        </div>
+    </div>
+
     <!-- === SECTION: Israel === -->
     <div class="section" id="israelSectionWrap" style="display:none">
         <div class="section-header">
@@ -512,31 +522,21 @@
         </div>
     </div>
 
-    <!-- === SECTION: International === -->
-    <div class="section" id="intlSectionWrap" style="display:none">
-        <div class="section-header">
-            <span class="section-icon">&#x1F30D;</span>
-            <h2>זירה בינלאומית</h2>
-        </div>
-        <div class="section-body" id="intlSection">
-        </div>
-    </div>
-
-    <!-- === SECTION: Scenarios - Hour === -->
+    <!-- === SECTION: Scenario - Hour === -->
     <div class="section" id="hourSectionWrap" style="display:none">
         <div class="section-header">
             <span class="section-icon">&#x23F1;&#xFE0F;</span>
-            <h2>תרחישים - שעה קרובה</h2>
+            <h2>תרחיש - שעה קרובה</h2>
         </div>
         <div class="section-body" id="hourScenarios">
         </div>
     </div>
 
-    <!-- === SECTION: Scenarios - Days === -->
+    <!-- === SECTION: Scenario - War Development === -->
     <div class="section" id="daysSectionWrap" style="display:none">
         <div class="section-header">
             <span class="section-icon">&#x1F4C8;</span>
-            <h2>תרחישי המשך - 24-72 שעות</h2>
+            <h2>תרחיש - התפתחות המלחמה</h2>
         </div>
         <div class="section-body" id="daysScenarios">
         </div>
@@ -670,25 +670,25 @@ function renderCurrentScan(scan) {
     // Render operational situation (current)
     document.getElementById('currentSituation').innerHTML = renderMarkdown(sections.current || content);
 
+    // Render hot events
+    if (sections.hot) {
+        document.getElementById('hotSectionWrap').style.display = '';
+        document.getElementById('hotSection').innerHTML = renderMarkdown(sections.hot);
+    }
+
     // Render Israel section
     if (sections.israel) {
         document.getElementById('israelSectionWrap').style.display = '';
         document.getElementById('israelSection').innerHTML = renderMarkdown(sections.israel);
     }
 
-    // Render international section
-    if (sections.intl) {
-        document.getElementById('intlSectionWrap').style.display = '';
-        document.getElementById('intlSection').innerHTML = renderMarkdown(sections.intl);
-    }
-
-    // Render hourly scenarios
+    // Render hourly scenario
     if (sections.hourly) {
         document.getElementById('hourSectionWrap').style.display = '';
         document.getElementById('hourScenarios').innerHTML = '<div class="scenario-block hour">' + renderMarkdown(sections.hourly) + '</div>';
     }
 
-    // Render days scenarios
+    // Render war development scenario
     if (sections.days) {
         document.getElementById('daysSectionWrap').style.display = '';
         document.getElementById('daysScenarios').innerHTML = '<div class="scenario-block days">' + renderMarkdown(sections.days) + '</div>';
@@ -702,9 +702,8 @@ function renderCurrentScan(scan) {
 }
 
 function parseSections(text) {
-    const sections = { current: '', israel: '', intl: '', scenarios: '', hourly: '', days: '', sources: '' };
+    const sections = { current: '', hot: '', israel: '', scenarios: '', hourly: '', days: '', sources: '' };
 
-    // Split by markdown headers (## or ###)
     const lines = text.split('\n');
     let currentSection = 'current';
     let buffer = [];
@@ -712,7 +711,6 @@ function parseSections(text) {
     function flushBuffer() {
         const content = buffer.join('\n').trim();
         if (content) {
-            // Append to section (don't overwrite - some sections span multiple headers)
             if (sections[currentSection]) {
                 sections[currentSection] += '\n' + content;
             } else {
@@ -723,63 +721,44 @@ function parseSections(text) {
     }
 
     for (const line of lines) {
-        const l = line;
-
-        // Detect section headers - check if this is a markdown header line
-        const isHeader = /^#{1,4}\s/.test(l);
+        const isHeader = /^#{1,4}\s/.test(line);
         if (!isHeader) {
             buffer.push(line);
             continue;
         }
 
-        // It's a header line - determine which section it belongs to
-        const headerText = l.replace(/^#+\s*/, '').toLowerCase();
+        const h = line.replace(/^#+\s*/, '');
 
         // Current situation / operational
-        if (headerText.includes('מצב מבצעי') || headerText.includes('מצב נוכחי') || headerText.includes('🔴')) {
-            flushBuffer();
-            currentSection = 'current';
-            continue;
+        if (h.includes('מצב מבצעי') || h.includes('מצב נוכחי') || h.includes('🔴')) {
+            flushBuffer(); currentSection = 'current'; continue;
         }
-        // Israel section
-        if (headerText.includes('המצב בישראל') || headerText.includes('ישראל') && headerText.includes('🇮🇱')) {
-            flushBuffer();
-            currentSection = 'israel';
-            continue;
+        // Hot events
+        if (h.includes('אירועים חמים') || h.includes('🔥')) {
+            flushBuffer(); currentSection = 'hot'; continue;
         }
-        // International
-        if (headerText.includes('זירה בינלאומית') || headerText.includes('בינלאומי') || headerText.includes('🌍')) {
-            flushBuffer();
-            currentSection = 'intl';
-            continue;
+        // Israel
+        if (h.includes('המצב בישראל') || h.includes('🇮🇱')) {
+            flushBuffer(); currentSection = 'israel'; continue;
         }
-        // Hourly scenarios
-        if (headerText.includes('שעה קרובה') || (headerText.includes('תרחיש') && headerText.includes('שעה')) || headerText.includes('📊')) {
-            flushBuffer();
-            currentSection = 'hourly';
-            continue;
+        // Hourly scenario
+        if (h.includes('שעה קרובה') || h.includes('📊') || (h.includes('תרחיש') && h.includes('שעה'))) {
+            flushBuffer(); currentSection = 'hourly'; continue;
         }
-        // Days scenarios (24-72)
-        if (headerText.includes('24-72') || headerText.includes('המשך') || headerText.includes('📈') || (headerText.includes('תרחיש') && (headerText.includes('ימים') || headerText.includes('72')))) {
-            flushBuffer();
-            currentSection = 'days';
-            continue;
+        // War development / days scenario
+        if (h.includes('התפתחות') || h.includes('📈') || h.includes('24-72') || h.includes('המשך') || (h.includes('תרחיש') && (h.includes('מלחמה') || h.includes('ימים')))) {
+            flushBuffer(); currentSection = 'days'; continue;
         }
         // Generic scenarios (fallback)
-        if (headerText.includes('תרחיש') || headerText.includes('scenario')) {
-            flushBuffer();
-            currentSection = 'scenarios';
-            continue;
+        if (h.includes('תרחיש')) {
+            flushBuffer(); currentSection = 'scenarios'; continue;
         }
         // Sources
-        if (headerText.includes('מקורות') || headerText.includes('sources') || headerText.includes('הערכת מקורות')) {
-            flushBuffer();
-            currentSection = 'sources';
-            continue;
+        if (h.includes('מקורות')) {
+            flushBuffer(); currentSection = 'sources'; continue;
         }
 
-        // Sub-headers within a section (e.g. "התקפות על איראן", "תגובת איראן")
-        // Keep them in the current section
+        // Sub-header within current section
         buffer.push(line);
     }
     flushBuffer();
