@@ -546,7 +546,7 @@
     <div class="section">
         <div class="section-header">
             <span class="section-icon">&#x1F4CB;</span>
-            <h2>מקורות והערכת אמינות</h2>
+            <h2>מקורות והערכת אמינות <span style="font-weight:400;font-size:0.72rem;color:#9ca3af">(הערכת AI)</span></h2>
         </div>
         <div class="section-body" id="sourcesSection">
             <div class="loading-state">
@@ -663,8 +663,18 @@ function renderCurrentScan(scan) {
     const scanIndex = historyData.length > 0 ? historyData.length : 1;
     document.getElementById('scanNum').textContent = 'סקירה #' + scanIndex;
 
-    // Parse the content into sections
-    const content = scan.content;
+    // Clean up AI preamble/banners before parsing
+    let content = scan.content;
+    // Remove lines like "מבצע סריקה...", "רגע...", "---", banner warnings
+    content = content.replace(/^.*מבצע סריקה.*\n?/gm, '');
+    content = content.replace(/^.*רגע\.\.\..*\n?/gm, '');
+    content = content.replace(/^.*אירוע מתפתח בזמן אמת.*\n?/gm, '');
+    content = content.replace(/^.*מצב משתנה בדקות.*\n?/gm, '');
+    content = content.replace(/^# 🔴 סקירה מבצעית.*\n?/gm, '');
+    content = content.replace(/^\*\*⚠️.*\*\*\n?/gm, '');
+    content = content.replace(/^---\s*$/gm, '');
+    content = content.trim();
+
     const sections = parseSections(content);
 
     // Render operational situation (current)
