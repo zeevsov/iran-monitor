@@ -1,0 +1,16 @@
+{
+  "Epoch Times": {"score": 75, "mentions": 0},
+  "ISW": {"score": 80, "mentions": 0},
+  "Jane's": {"score": 85, "mentions": 0},
+  "Reuters": {"score": 65, "mentions": 0},
+  "AP": {"score": 65, "mentions": 0},
+  "Times of Israel": {"score": 70, "mentions": 0},
+  "Jerusalem Post": {"score": 68, "mentions": 0},
+  "Al Arabiya": {"score": 60, "mentions": 0},
+  "OSINT Analysts": {"score": 70, "mentions": 0},
+  "BBC": {"score": 35, "mentions": 0},
+  "CNN": {"score": 40, "mentions": 0},
+  "Al Jazeera": {"score": 30, "mentions": 0},
+  "IRNA": {"score": 25, "mentions": 0},
+  "Fars News": {"score": 25, "mentions": 0}
+}

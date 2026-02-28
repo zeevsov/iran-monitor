@@ -1,0 +1,47 @@
+name: Iran Monitor - Hourly Scan
+
+on:
+  # Automatic: every hour
+  schedule:
+    - cron: '0 * * * *'
+
+  # Manual trigger with optional intel input
+  workflow_dispatch:
+    inputs:
+      user_intel:
+        description: 'מידע נוסף להכנסה לסקירה (אופציונלי)'
+        required: false
+        default: ''
+
+# Allow the workflow to push changes back to the repo
+permissions:
+  contents: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Run scan
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          USER_INTEL: ${{ github.event.inputs.user_intel }}
+        run: python scripts/scan.py
+
+      - name: Commit and push results
+        run: |
+          git config user.name "Iran Monitor Bot"
+          git config user.email "bot@iran-monitor.github.io"
+          git add data/
+          git diff --staged --quiet || (git commit -m "Scan update $(date -u '+%Y-%m-%d %H:%M UTC')" && git push)

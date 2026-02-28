@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מוניטור מצב | איראן - סקירה מבצעית</title>
+    <meta name="description" content="סקירה מבצעית עדכנית של המצב באיראן - עדכון אוטומטי כל שעה">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Heebo', 'Segoe UI', Arial, sans-serif;
+            background: #f8f9fa;
+            color: #1a1a2e;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Top Bar */
+        .topbar {
+            background: #fff;
+            border-bottom: 3px solid #c0392b;
+            padding: 14px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+        }
+
+        .topbar-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar h1 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #fef2f2;
+            color: #c0392b;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border: 1px solid #fecaca;
+        }
+
+        .live-dot {
+            width: 7px; height: 7px;
+            background: #c0392b;
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .topbar-meta {
+            font-size: 0.78rem;
+            color: #6b7280;
+        }
+
+        .timer-badge {
+            font-size: 0.72rem;
+            color: #6b7280;
+            background: #f3f4f6;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-family: monospace;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Status Banner */
+        .status-banner {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 10px;
+            padding: 14px 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #92400e;
+            display: none;
+        }
+
+        .status-banner.visible { display: block; }
+
+        .status-banner.error {
+            background: #fef2f2;
+            border-color: #fecaca;
+            color: #991b1b;
+        }
+
+        /* Update Info Bar */
+        .update-bar {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 14px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .update-bar .time {
+            font-weight: 600;
+            color: #1a1a2e;
+            font-size: 0.9rem;
+        }
+
+        .update-bar .scan-num {
+            font-size: 0.78rem;
+            color: #6b7280;
+            background: #f3f4f6;
+            padding: 3px 10px;
+            border-radius: 6px;
+        }
+
+        /* Section Cards */
+        .section {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 14px 20px;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            font-size: 1.1rem;
+        }
+
+        .section-header h2 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .section-body {
+            padding: 18px 22px;
+        }
+
+        /* Content Styling */
+        .section-body h3 {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #374151;
+            margin: 14px 0 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .section-body h3:first-child { margin-top: 0; }
+
+        .section-body ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .section-body ul li {
+            padding: 6px 0;
+            padding-right: 20px;
+            position: relative;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #f9fafb;
+        }
+
+        .section-body ul li:last-child { border: none; }
+
+        .section-body ul li::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 14px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #c0392b;
+        }
+
+        .section-body p {
+            font-size: 0.9rem;
+            margin: 6px 0;
+        }
+
+        .section-body strong {
+            color: #c0392b;
+        }
+
+        .section-body em {
+            color: #6b7280;
+            font-style: normal;
+        }
+
+        .section-body a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .section-body a:hover { text-decoration: underline; }
+
+        .section-body blockquote {
+            border-right: 3px solid #8b5cf6;
+            padding: 8px 16px;
+            margin: 10px 0;
+            background: #f5f3ff;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.85rem;
+            color: #4c1d95;
+        }
+
+        .section-body hr {
+            border: none;
+            border-top: 1px solid #e5e7eb;
+            margin: 14px 0;
+        }
+
+        /* Verification Badges */
+        .badge {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 1px 7px;
+            border-radius: 4px;
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+
+        .badge-confirmed {
+            background: #ecfdf5;
+            color: #059669;
+            border: 1px solid #a7f3d0;
+        }
+
+        .badge-single {
+            background: #fffbeb;
+            color: #d97706;
+            border: 1px solid #fde68a;
+        }
+
+        .badge-rumor {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        /* Source Tag */
+        .src {
+            display: inline-block;
+            font-size: 0.7rem;
+            color: #6b7280;
+            background: #f3f4f6;
+            padding: 1px 6px;
+            border-radius: 3px;
+            margin-right: 3px;
+        }
+
+        /* Scenarios */
+        .scenario-block {
+            background: #f8f9fa;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin: 10px 0;
+        }
+
+        .scenario-block h3 {
+            border: none !important;
+            padding-bottom: 0 !important;
+            margin-bottom: 6px !important;
+        }
+
+        .scenario-block.hour { border-right: 3px solid #c0392b; }
+        .scenario-block.days { border-right: 3px solid #2563eb; }
+
+        /* Sources Grid */
+        .sources-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .source-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 10px;
+            background: #f9fafb;
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+
+        .source-score {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .score-high { background: #ecfdf5; color: #059669; }
+        .score-mid  { background: #fffbeb; color: #d97706; }
+        .score-low  { background: #fef2f2; color: #dc2626; }
+
+        .reliability-bar {
+            width: 50px;
+            height: 5px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+            display: inline-block;
+            margin: 0 6px;
+            vertical-align: middle;
+        }
+
+        .reliability-fill {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        /* Notice */
+        .notice {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            border-top: 1px solid #f3f4f6;
+            margin-top: 20px;
+        }
+
+        /* History */
+        .history-section {
+            margin-top: 30px;
+        }
+
+        .history-toggle {
+            width: 100%;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #374151;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-toggle:hover { background: #f9fafb; }
+
+        .history-content {
+            display: none;
+            margin-top: 12px;
+        }
+
+        .history-content.open { display: block; }
+
+        .history-item {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .history-item-header {
+            padding: 10px 16px;
+            background: #f9fafb;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .history-item-header:hover { background: #f3f4f6; }
+
+        .history-item-body {
+            display: none;
+            padding: 16px;
+        }
+
+        .history-item-body.open { display: block; }
+
+        /* Loading */
+        .loading-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6b7280;
+        }
+
+        .loading-state .spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid #e5e7eb;
+            border-top-color: #c0392b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 14px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #9ca3af;
+        }
+
+        .empty-state .icon { font-size: 2.5rem; margin-bottom: 12px; }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .container { padding: 14px; }
+            .sources-grid { grid-template-columns: 1fr; }
+            .topbar-inner { flex-direction: column; gap: 6px; }
+            .topbar-right { flex-direction: column; gap: 4px; }
+            .update-bar { flex-direction: column; gap: 6px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="topbar">
+    <div class="topbar-inner">
+        <h1>
+            &#x1F6E1;&#xFE0F; מוניטור מצב | איראן
+            <span class="live-badge"><span class="live-dot"></span> LIVE</span>
+        </h1>
+        <div class="topbar-right">
+            <span class="timer-badge" id="nextUpdate">עדכון הבא: --:--</span>
+            <span class="topbar-meta">סקירה מבצעית מבוססת AI</span>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container">
+
+    <!-- Status Banner (shows errors/info) -->
+    <div class="status-banner" id="statusBanner"></div>
+
+    <!-- Update Time -->
+    <div class="update-bar">
+        <span class="time" id="updateTime">&#x1F552; טוען...</span>
+        <span class="scan-num" id="scanNum"></span>
+    </div>
+
+    <!-- === SECTION: Current Situation === -->
+    <div class="section">
+        <div class="section-header">
+            <span class="section-icon">&#x1F534;</span>
+            <h2>מצב נוכחי</h2>
+        </div>
+        <div class="section-body" id="currentSituation">
+            <div class="loading-state">
+                <div class="spinner"></div>
+                <div>טוען סקירה...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- === SECTION: Scenarios === -->
+    <div class="section">
+        <div class="section-header">
+            <span class="section-icon">&#x1F52E;</span>
+            <h2>תרחישים צפויים</h2>
+        </div>
+        <div class="section-body" id="scenarios">
+            <div class="loading-state">
+                <div class="spinner"></div>
+                <div>טוען...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- === SECTION: Sources === -->
+    <div class="section">
+        <div class="section-header">
+            <span class="section-icon">&#x1F4CB;</span>
+            <h2>מקורות והערכת אמינות</h2>
+        </div>
+        <div class="section-body" id="sourcesSection">
+            <div class="loading-state">
+                <div class="spinner"></div>
+                <div>טוען...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- === History === -->
+    <div class="history-section" id="historySection" style="display:none">
+        <button class="history-toggle" onclick="toggleHistory()">
+            <span id="historyLabel">&#x1F4DA; סקירות קודמות</span>
+            <span id="historyArrow">&#x25BC;</span>
+        </button>
+        <div class="history-content" id="historyContent"></div>
+    </div>
+
+    <!-- Notice -->
+    <div class="notice">
+        הסקירה מבוססת על ניתוח AI של מקורות מרובים בשפות שונות (אנגלית, ערבית, פרסית, עברית).<br>
+        המידע להקשר ומעקב בלבד - אינו מהווה ייעוץ ביטחוני. עדכון אוטומטי כל שעה.
+    </div>
+
+</div>
+
+<script>
+// ========================
+// CONFIG
+// ========================
+const DATA_BASE = './data';
+const REFRESH_INTERVAL = 5 * 60 * 1000; // Check for new data every 5 minutes
+const SCAN_INTERVAL = 60; // Expected scan every 60 minutes
+
+// ========================
+// STATE
+// ========================
+let currentData = null;
+let historyData = [];
+let sourcesData = {};
+let lastDataHash = '';
+
+// ========================
+// INIT
+// ========================
+async function init() {
+    await loadData();
+    setInterval(checkForUpdates, REFRESH_INTERVAL);
+    updateCountdown();
+    setInterval(updateCountdown, 30000);
+}
+
+// ========================
+// DATA LOADING
+// ========================
+async function loadData() {
+    try {
+        const [latestRes, historyRes, sourcesRes] = await Promise.all([
+            fetch(DATA_BASE + '/latest.json?t=' + Date.now()),
+            fetch(DATA_BASE + '/history.json?t=' + Date.now()),
+            fetch(DATA_BASE + '/sources.json?t=' + Date.now())
+        ]);
+
+        if (latestRes.ok) {
+            currentData = await latestRes.json();
+        }
+        if (historyRes.ok) {
+            historyData = await historyRes.json();
+        }
+        if (sourcesRes.ok) {
+            sourcesData = await sourcesRes.json();
+        }
+
+        if (currentData && currentData.content) {
+            renderCurrentScan(currentData);
+            renderSources(sourcesData);
+            renderHistory(historyData);
+            lastDataHash = currentData.timestamp || '';
+        } else {
+            showEmpty();
+        }
+
+    } catch (err) {
+        showBanner('לא ניתן לטעון נתונים. הדף ינסה שוב בעוד 5 דקות.', true);
+        showEmpty();
+    }
+}
+
+async function checkForUpdates() {
+    try {
+        const res = await fetch(DATA_BASE + '/latest.json?t=' + Date.now());
+        if (!res.ok) return;
+        const data = await res.json();
+        const newHash = data.timestamp || '';
+        if (newHash !== lastDataHash) {
+            // New data available - full reload
+            await loadData();
+            showBanner('עדכון חדש התקבל!', false);
+            setTimeout(() => hideBanner(), 5000);
+        }
+    } catch (e) {
+        // Silent fail
+    }
+}
+
+// ========================
+// RENDERING
+// ========================
+function renderCurrentScan(scan) {
+    // Update time bar
+    const timeStr = formatTime(scan.timestamp);
+    document.getElementById('updateTime').innerHTML = '&#x1F552; עדכון אחרון: ' + timeStr + ' (שעון ישראל)';
+
+    const scanIndex = historyData.length > 0 ? historyData.length : 1;
+    document.getElementById('scanNum').textContent = 'סקירה #' + scanIndex;
+
+    // Parse the content into sections
+    const content = scan.content;
+    const sections = parseSections(content);
+
+    // Render current situation
+    document.getElementById('currentSituation').innerHTML = renderMarkdown(sections.current || content);
+
+    // Render scenarios
+    let scenariosHtml = '';
+    if (sections.hourly) {
+        scenariosHtml += '<div class="scenario-block hour"><h3>&#x23F1;&#xFE0F; בשעה הקרובה</h3>' + renderMarkdown(sections.hourly) + '</div>';
+    }
+    if (sections.days) {
+        scenariosHtml += '<div class="scenario-block days"><h3>&#x1F4C5; 24-72 שעות</h3>' + renderMarkdown(sections.days) + '</div>';
+    }
+    if (!scenariosHtml && sections.scenarios) {
+        scenariosHtml = renderMarkdown(sections.scenarios);
+    }
+    if (scenariosHtml) {
+        document.getElementById('scenarios').innerHTML = scenariosHtml;
+    }
+}
+
+function parseSections(text) {
+    const sections = { current: '', scenarios: '', hourly: '', days: '', sources: '' };
+
+    // Try to split by markdown headers
+    const lines = text.split('\n');
+    let currentSection = 'current';
+    let buffer = [];
+
+    for (const line of lines) {
+        const lower = line.toLowerCase();
+        const heb = line;
+
+        if (lower.includes('מצב נוכחי') || lower.includes('מה קורה') || lower.includes('current') || lower.includes('what happened')) {
+            if (buffer.length) sections[currentSection] = buffer.join('\n');
+            currentSection = 'current';
+            buffer = [];
+            continue;
+        }
+        if ((lower.includes('תרחיש') || lower.includes('scenario')) && !lower.includes('שעה') && !lower.includes('24')) {
+            if (buffer.length) sections[currentSection] = buffer.join('\n');
+            currentSection = 'scenarios';
+            buffer = [];
+            continue;
+        }
+        if (lower.includes('שעה הקרובה') || lower.includes('next hour') || lower.includes('בשעה הקרובה')) {
+            if (buffer.length) sections[currentSection] = buffer.join('\n');
+            currentSection = 'hourly';
+            buffer = [];
+            continue;
+        }
+        if (lower.includes('24-72') || lower.includes('התפתחות') || lower.includes('development') || lower.includes('coming days')) {
+            if (buffer.length) sections[currentSection] = buffer.join('\n');
+            currentSection = 'days';
+            buffer = [];
+            continue;
+        }
+        if (lower.includes('מקורות') || lower.includes('sources')) {
+            if (buffer.length) sections[currentSection] = buffer.join('\n');
+            currentSection = 'sources';
+            buffer = [];
+            continue;
+        }
+
+        buffer.push(line);
+    }
+    if (buffer.length) sections[currentSection] = buffer.join('\n');
+
+    return sections;
+}
+
+function renderMarkdown(text) {
+    if (!text) return '<p style="color:#9ca3af">אין מידע</p>';
+
+    let html = text
+        // Headers
+        .replace(/^#### (.+)$/gm, '<h4 style="font-size:0.85rem;font-weight:600;margin:10px 0 4px;color:#4b5563">$1</h4>')
+        .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+        .replace(/^## (.+)$/gm, '<h3 style="font-size:1rem">$1</h3>')
+        .replace(/^# (.+)$/gm, '<h3 style="font-size:1.05rem">$1</h3>')
+        // Bold
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        // Italic
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        // Verification badges
+        .replace(/✅/g, '<span class="badge badge-confirmed">מאומת</span>')
+        .replace(/⚠️/g, '<span class="badge badge-single">מקור בודד</span>')
+        .replace(/❓/g, '<span class="badge badge-rumor">לא מאומת</span>')
+        .replace(/\[אמינות גבוהה ✓\]/g, '<span class="badge badge-confirmed">אמינות גבוהה ✓</span>')
+        .replace(/\[אמינות בינונית ~\]/g, '<span class="badge badge-single">אמינות בינונית ~</span>')
+        .replace(/\[אמינות נמוכה \?\]/g, '<span class="badge badge-rumor">אמינות נמוכה ?</span>')
+        // Blockquote
+        .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
+        // Horizontal rule
+        .replace(/^---$/gm, '<hr>')
+        // Unordered list items
+        .replace(/^[*\-] (.+)$/gm, '<li>$1</li>')
+        // Links
+        .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+        // Paragraphs
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br>');
+
+    // Wrap consecutive <li> in <ul>
+    html = html.replace(/(<li>[\s\S]*?<\/li>(?:<br>)?)+/g, (match) => {
+        return '<ul>' + match.replace(/<br>/g, '') + '</ul>';
+    });
+
+    return '<div class="briefing-content"><p>' + html + '</p></div>';
+}
+
+function renderSources(sources) {
+    const container = document.getElementById('sourcesSection');
+    const entries = Object.entries(sources || {}).sort((a, b) => (b[1].score || 50) - (a[1].score || 50));
+
+    if (entries.length === 0) {
+        container.innerHTML = '<p style="color:#9ca3af;text-align:center;font-size:0.85rem">נתוני אמינות יתעדכנו לאחר מספר סקירות</p>';
+        return;
+    }
+
+    let html = '<div class="sources-grid">';
+    for (const [name, data] of entries) {
+        const score = data.score || 50;
+        const mentions = data.mentions || 0;
+        const colorClass = score >= 70 ? 'score-high' : score >= 40 ? 'score-mid' : 'score-low';
+        const barColor = score >= 70 ? '#059669' : score >= 40 ? '#d97706' : '#dc2626';
+
+        html += '<div class="source-item">';
+        html += '<span>' + name + ' <small style="color:#9ca3af">(' + mentions + 'x)</small></span>';
+        html += '<span style="display:flex;align-items:center;gap:4px">';
+        html += '<span class="reliability-bar"><span class="reliability-fill" style="width:' + score + '%;background:' + barColor + '"></span></span>';
+        html += '<span class="source-score ' + colorClass + '">' + score + '</span>';
+        html += '</span>';
+        html += '</div>';
+    }
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+function renderHistory(history) {
+    if (!history || history.length <= 1) {
+        document.getElementById('historySection').style.display = 'none';
+        return;
+    }
+
+    document.getElementById('historySection').style.display = 'block';
+    document.getElementById('historyLabel').innerHTML = '&#x1F4DA; סקירות קודמות (' + (history.length - 1) + ')';
+
+    const container = document.getElementById('historyContent');
+    // Skip the first one (it's the current/latest)
+    const pastScans = history.slice(1);
+
+    container.innerHTML = pastScans.map((scan, i) => {
+        const time = formatTime(scan.timestamp);
+        const summary = (scan.summary || '').substring(0, 120);
+        return '<div class="history-item">' +
+            '<div class="history-item-header" onclick="toggleHistoryItem(this)">' +
+                '<span>' + time + '</span>' +
+                '<span>' + summary + '...</span>' +
+            '</div>' +
+            '<div class="history-item-body">' +
+                renderMarkdown(scan.content || '') +
+            '</div>' +
+        '</div>';
+    }).join('');
+}
+
+// ========================
+// UTILITIES
+// ========================
+function formatTime(timestamp) {
+    if (!timestamp) return 'לא ידוע';
+    const d = new Date(timestamp * 1000);
+    // Format as Israel time
+    return d.toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' });
+}
+
+function updateCountdown() {
+    if (!currentData || !currentData.timestamp) return;
+    const lastScan = currentData.timestamp * 1000;
+    const nextScan = lastScan + (SCAN_INTERVAL * 60 * 1000);
+    const now = Date.now();
+    const remaining = nextScan - now;
+
+    const el = document.getElementById('nextUpdate');
+    if (remaining <= 0) {
+        el.textContent = 'עדכון צפוי בכל רגע...';
+    } else {
+        const mins = Math.floor(remaining / 60000);
+        const secs = Math.floor((remaining % 60000) / 1000);
+        el.textContent = 'עדכון הבא: ~' + mins + ' דק\'';
+    }
+}
+
+function showEmpty() {
+    document.getElementById('updateTime').innerHTML = '&#x1F552; ממתין לסקירה ראשונה...';
+    document.getElementById('currentSituation').innerHTML = '<div class="empty-state"><div class="icon">&#x1F4E1;</div><p>הסקירה הראשונה טרם בוצעה.<br>היא תתבצע אוטומטית בשעה הקרובה.</p></div>';
+    document.getElementById('scenarios').innerHTML = '<div class="empty-state"><p>ממתין לסקירה ראשונה</p></div>';
+    document.getElementById('sourcesSection').innerHTML = '<div class="empty-state"><p>ממתין לסקירה ראשונה</p></div>';
+}
+
+function showBanner(msg, isError) {
+    const el = document.getElementById('statusBanner');
+    el.textContent = msg;
+    el.className = 'status-banner visible' + (isError ? ' error' : '');
+}
+
+function hideBanner() {
+    document.getElementById('statusBanner').className = 'status-banner';
+}
+
+function toggleHistory() {
+    const content = document.getElementById('historyContent');
+    const arrow = document.getElementById('historyArrow');
+    content.classList.toggle('open');
+    arrow.textContent = content.classList.contains('open') ? '\u25B2' : '\u25BC';
+}
+
+function toggleHistoryItem(el) {
+    const body = el.nextElementSibling;
+    body.classList.toggle('open');
+}
+
+// Start
+init();
+</script>
+
+</body>
+</html>
