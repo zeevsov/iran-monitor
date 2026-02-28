@@ -100,8 +100,7 @@ def build_system_prompt(history, sources, user_intel, feedback):
 ### 🔥 אירועים חמים
 זה הסעיף הכי חשוב. מה חדש ומשמעותי בשעה-שעתיים האחרונות. 4-5 פסקאות (3-4 משפטים כל אחת). דגש מקסימלי על מה שקרה *עכשיו*:
 - תקיפות חדשות, שיגורים, חיסולים, תנועות כוחות - עם פרטים: איפה, מה נפגע, כמה נפגעים, מי דיווח.
-- אירועים בינלאומיים: מה אומרות/עושות מעצמות (ארה"ב, רוסיה, סין, טורקיה, מדינות ערב)? הצהרות חשובות, סנקציות, החלטות באו"ם, פעולות צבאיות של מדינות נוספות, תנועות נכסים צבאיים.
-- גם אם הזירה הבינלאומית דלה - ציין מה ידוע. האם מדינות ערב הגיבו? האם טורקיה, רוסיה, סין אמרו משהו? האם יש תנועות דיפלומטיות?
+- בסוף הסעיף, אם יש התפתחות בינלאומית חשובה באמת - ציין אותה ב-3-4 משפטים לכל היותר. הבינלאומי הוא תוספת קטנה, לא עיקר.
 
 ### 🇮🇱 המצב בישראל
 2-3 פסקאות מפורטות:
@@ -111,10 +110,10 @@ def build_system_prompt(history, sources, user_intel, feedback):
 - *** אל תוריד פרטים על נפגעים ופגיעות שהיו בסקירה הקודמת. *** הם עדיין רלוונטיים. הוסף עליהם אם יש חדש.
 
 ### 📊 תרחיש - שעה קרובה
-פסקה אחת עד שתיים: מה הכי סביר שיקרה עכשיו. אילו גלים צפויים, מאיפה, באיזה אמצעים. נקודות שבר אפשריות.
+*** סעיף חובה - אל תדלג ואל תקצר. *** פסקה אחת עד שתיים: מה הכי סביר שיקרה עכשיו. אילו גלים צפויים, מאיפה, באיזה אמצעים. נקודות שבר אפשריות.
 
 ### 📈 תרחיש - התפתחות המלחמה
-2-3 פסקאות: לאן המלחמה הולכת בימים-שבועות הקרובים. האם יש צפי להסלמה/הפסקה. מה מכפיל הלחץ הבא. השפעות אזוריות ובינלאומיות. תחזיות ממקורות מודיעיניים אם קיימות.
+*** סעיף חובה - אל תדלג ואל תקצר. *** 2-3 פסקאות: לאן המלחמה הולכת בימים-שבועות הקרובים. האם יש צפי להסלמה/הפסקה. מה מכפיל הלחץ הבא. תחזיות ממקורות מודיעיניים אם קיימות.
 
 ### מקורות עיקריים
 שורה אחת: 3-5 מקורות מרכזיים ששימשו.
@@ -232,10 +231,10 @@ def run_scan(extra_intel=None):
 
     user_message = """תדריך מבצעי מפורט. מה המצב עכשיו?
 
-חפש חדשות עדכניות ביותר על: מלחמת איראן, תקיפות, שיגורים, המצב בישראל, תגובות צבאיות, תגובות בינלאומיות.
+חפש חדשות עדכניות ביותר על: מלחמת איראן, תקיפות, שיגורים, המצב בישראל, תגובות צבאיות.
 חפש בכל השפות (אנגלית, ערבית, פרסית, עברית, תורכית). תן מספרים מדויקים. היה מפורט - כלול כל מידע עובדתי חשוב.
 דגש: מה חדש מאז הסקירה האחרונה? מה השתנה? מה ההתפתחויות החמות ביותר ברגע זה?
-דגש: מה קורה בזירה הבינלאומית? תגובות מדינות, דיפלומטיה, סנקציות, תנועות צבאיות של מדינות שלישיות."""
+חשוב: הקפד לכתוב את כל הסעיפים במלואם, כולל תרחיש שעה קרובה ותרחיש התפתחות המלחמה."""
 
     print("Calling Claude API with web search...")
     client = anthropic.Anthropic(api_key=api_key)
@@ -292,9 +291,14 @@ def run_scan(extra_intel=None):
     print("Saving latest.json...")
     save_json("latest.json", scan)
 
-    # Prepend to history
+    # Prepend to history, keep only 3 (sampled, not necessarily consecutive)
     history.insert(0, scan)
-    history = history[:50]  # Keep max 50
+    if len(history) > 3:
+        # Keep latest, plus 2 evenly spaced from the rest
+        rest = history[1:]
+        step = max(1, len(rest) // 2)
+        sampled = [rest[0], rest[min(step, len(rest)-1)]]
+        history = [history[0]] + sampled
     print("Saving history.json...")
     save_json("history.json", history)
 
