@@ -12,16 +12,16 @@
     "mentions": 0
   },
   "Reuters": {
-    "score": 74,
-    "mentions": 24
+    "score": 73,
+    "mentions": 25
   },
   "AP": {
     "score": 67,
     "mentions": 2
   },
   "Times of Israel": {
-    "score": 81,
-    "mentions": 25
+    "score": 80,
+    "mentions": 26
   },
   "Jerusalem Post": {
     "score": 68,
@@ -40,12 +40,12 @@
     "mentions": 0
   },
   "CNN": {
-    "score": 52,
-    "mentions": 25
+    "score": 51,
+    "mentions": 26
   },
   "Al Jazeera": {
-    "score": 29,
-    "mentions": 12
+    "score": 28,
+    "mentions": 13
   },
   "IRNA": {
     "score": 31,
