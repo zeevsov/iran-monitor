@@ -1,11 +1,9 @@
 name: Iran Monitor - Hourly Scan
 
 on:
-  # Daytime (06:00-23:59 IST = 04-21 UTC): every 2 hours
-  # Nighttime (00:00-05:59 IST = 22-03 UTC): every 3 hours
+  # Every 6 hours
   schedule:
-    - cron: '5 4,6,8,10,12,14,16,18,20 * * *'
-    - cron: '5 22,1 * * *'
+    - cron: '5 0,6,12,18 * * *'
 
   # Manual trigger with optional intel input
   workflow_dispatch:

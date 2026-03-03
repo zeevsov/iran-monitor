@@ -302,14 +302,8 @@ def run_scan(extra_intel=None):
     print("Saving latest.json...")
     save_json("latest.json", scan)
 
-    # Prepend to history, keep only 3 (sampled, not necessarily consecutive)
-    history.insert(0, scan)
-    if len(history) > 3:
-        # Keep latest, plus 2 evenly spaced from the rest
-        rest = history[1:]
-        step = max(1, len(rest) // 2)
-        sampled = [rest[0], rest[min(step, len(rest)-1)]]
-        history = [history[0]] + sampled
+    # Keep only the latest scan
+    history = [scan]
     print("Saving history.json...")
     save_json("history.json", history)
 
