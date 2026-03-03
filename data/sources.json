@@ -5,7 +5,7 @@
   },
   "ISW": {
     "score": 83,
-    "mentions": 1
+    "mentions": 2
   },
   "Jane's": {
     "score": 85,
@@ -44,8 +44,8 @@
     "mentions": 26
   },
   "Al Jazeera": {
-    "score": 28,
-    "mentions": 13
+    "score": 31,
+    "mentions": 14
   },
   "IRNA": {
     "score": 31,
@@ -90,5 +90,9 @@
   "Anadolu Agency": {
     "score": 50,
     "mentions": 2
+  },
+  "TRT World": {
+    "score": 53,
+    "mentions": 1
   }
 }
