@@ -5,7 +5,7 @@
   },
   "ISW": {
     "score": 86,
-    "mentions": 4
+    "mentions": 5
   },
   "Jane's": {
     "score": 85,
@@ -13,15 +13,15 @@
   },
   "Reuters": {
     "score": 73,
-    "mentions": 26
+    "mentions": 27
   },
   "AP": {
     "score": 67,
-    "mentions": 2
+    "mentions": 3
   },
   "Times of Israel": {
     "score": 80,
-    "mentions": 27
+    "mentions": 28
   },
   "Jerusalem Post": {
     "score": 68,
@@ -41,11 +41,11 @@
   },
   "CNN": {
     "score": 53,
-    "mentions": 27
+    "mentions": 28
   },
   "Al Jazeera": {
     "score": 34,
-    "mentions": 16
+    "mentions": 17
   },
   "IRNA": {
     "score": 31,
