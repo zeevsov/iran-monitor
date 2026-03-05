@@ -13,7 +13,7 @@
   },
   "Reuters": {
     "score": 73,
-    "mentions": 28
+    "mentions": 29
   },
   "AP": {
     "score": 67,
@@ -21,11 +21,11 @@
   },
   "Times of Israel": {
     "score": 80,
-    "mentions": 30
+    "mentions": 31
   },
   "Jerusalem Post": {
     "score": 68,
-    "mentions": 3
+    "mentions": 4
   },
   "Al Arabiya": {
     "score": 62,
@@ -40,12 +40,12 @@
     "mentions": 0
   },
   "CNN": {
-    "score": 51,
-    "mentions": 31
+    "score": 50,
+    "mentions": 32
   },
   "Al Jazeera": {
     "score": 34,
-    "mentions": 19
+    "mentions": 20
   },
   "IRNA": {
     "score": 31,
@@ -73,7 +73,7 @@
   },
   "i24news": {
     "score": 49,
-    "mentions": 1
+    "mentions": 2
   },
   "Gulf News": {
     "score": 50,
@@ -93,6 +93,10 @@
   },
   "TRT World": {
     "score": 53,
+    "mentions": 1
+  },
+  "Asharq Al-Awsat": {
+    "score": 50,
     "mentions": 1
   }
 }
