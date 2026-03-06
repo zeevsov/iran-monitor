@@ -12,8 +12,8 @@
     "mentions": 0
   },
   "Reuters": {
-    "score": 73,
-    "mentions": 29
+    "score": 76,
+    "mentions": 30
   },
   "AP": {
     "score": 67,
@@ -40,8 +40,8 @@
     "mentions": 0
   },
   "CNN": {
-    "score": 53,
-    "mentions": 33
+    "score": 55,
+    "mentions": 34
   },
   "Al Jazeera": {
     "score": 34,
@@ -60,8 +60,8 @@
     "mentions": 4
   },
   "Kan News": {
-    "score": 52,
-    "mentions": 2
+    "score": 55,
+    "mentions": 3
   },
   "Tasnim": {
     "score": 48,
@@ -72,8 +72,8 @@
     "mentions": 1
   },
   "i24news": {
-    "score": 49,
-    "mentions": 2
+    "score": 48,
+    "mentions": 3
   },
   "Gulf News": {
     "score": 50,
@@ -88,8 +88,8 @@
     "mentions": 2
   },
   "Anadolu Agency": {
-    "score": 50,
-    "mentions": 4
+    "score": 52,
+    "mentions": 5
   },
   "TRT World": {
     "score": 53,
