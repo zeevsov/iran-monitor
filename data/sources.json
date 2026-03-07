@@ -13,7 +13,7 @@
   },
   "Reuters": {
     "score": 79,
-    "mentions": 33
+    "mentions": 34
   },
   "AP": {
     "score": 67,
@@ -21,7 +21,7 @@
   },
   "Times of Israel": {
     "score": 80,
-    "mentions": 34
+    "mentions": 35
   },
   "Jerusalem Post": {
     "score": 68,
@@ -45,7 +45,7 @@
   },
   "Al Jazeera": {
     "score": 33,
-    "mentions": 21
+    "mentions": 22
   },
   "IRNA": {
     "score": 31,
@@ -85,7 +85,7 @@
   },
   "The National (UAE)": {
     "score": 53,
-    "mentions": 2
+    "mentions": 3
   },
   "Anadolu Agency": {
     "score": 52,
