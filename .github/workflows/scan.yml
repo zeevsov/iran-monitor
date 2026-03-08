@@ -1,9 +1,9 @@
 name: Iran Monitor - Hourly Scan
 
 on:
-  # Every 12 hours
+  # Once daily ~06:30 IST (03:30 UTC)
   schedule:
-    - cron: '5 6,18 * * *'
+    - cron: '30 3 * * *'
 
   # Manual trigger with optional intel input
   workflow_dispatch:
