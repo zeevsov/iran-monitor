@@ -12,8 +12,8 @@
     "mentions": 0
   },
   "Reuters": {
-    "score": 79,
-    "mentions": 37
+    "score": 82,
+    "mentions": 38
   },
   "AP": {
     "score": 67,
@@ -40,8 +40,8 @@
     "mentions": 0
   },
   "CNN": {
-    "score": 57,
-    "mentions": 40
+    "score": 59,
+    "mentions": 41
   },
   "Al Jazeera": {
     "score": 33,
@@ -89,7 +89,7 @@
   },
   "Anadolu Agency": {
     "score": 52,
-    "mentions": 5
+    "mentions": 6
   },
   "TRT World": {
     "score": 53,
