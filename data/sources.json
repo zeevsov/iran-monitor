@@ -13,19 +13,19 @@
   },
   "Reuters": {
     "score": 81,
-    "mentions": 42
+    "mentions": 43
   },
   "AP": {
     "score": 67,
-    "mentions": 3
+    "mentions": 4
   },
   "Times of Israel": {
     "score": 80,
-    "mentions": 47
+    "mentions": 48
   },
   "Jerusalem Post": {
     "score": 68,
-    "mentions": 6
+    "mentions": 7
   },
   "Al Arabiya": {
     "score": 62,
@@ -89,7 +89,7 @@
   },
   "Anadolu Agency": {
     "score": 52,
-    "mentions": 8
+    "mentions": 9
   },
   "TRT World": {
     "score": 53,
