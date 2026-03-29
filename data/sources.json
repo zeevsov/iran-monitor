@@ -21,7 +21,7 @@
   },
   "Times of Israel": {
     "score": 80,
-    "mentions": 48
+    "mentions": 49
   },
   "Jerusalem Post": {
     "score": 68,
@@ -40,8 +40,8 @@
     "mentions": 0
   },
   "CNN": {
-    "score": 62,
-    "mentions": 47
+    "score": 65,
+    "mentions": 48
   },
   "Al Jazeera": {
     "score": 33,
@@ -76,8 +76,8 @@
     "mentions": 3
   },
   "Gulf News": {
-    "score": 50,
-    "mentions": 2
+    "score": 53,
+    "mentions": 3
   },
   "Telegram": {
     "score": 52,
